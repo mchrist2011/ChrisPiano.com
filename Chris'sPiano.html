@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris's Music - Learn Piano Online</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .floating-notes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-note {
+            position: absolute;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.1);
+            animation: float 8s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
+            animation: slideDown 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .auth-section {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 25px rgba(31, 38, 135, 0.3);
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 25px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab.active {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
+            animation: fadeInUp 0.8s ease-out;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease-in-out infinite;
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 0.7;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 25px 50px rgba(31, 38, 135, 0.6);
+        }
+
+        .card h2 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .level-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .level-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .level-btn:hover, .level-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .piano-container {
+            grid-column: span 2;
+            margin: 30px 0;
+        }
+
+        .piano-wrapper {
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .piano-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(72, 219, 251, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(254, 202, 87, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .piano {
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(to bottom, #2c2c2c 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 
+                inset 0 5px 10px rgba(0, 0, 0, 0.5),
+                0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .octave {
+            display: flex;
+            position: relative;
+        }
+
+        .key {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .white-key {
+            width: 45px;
+            height: 200px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 50%, #e8e8e8 100%);
+            border: 2px solid #ddd;
+            border-radius: 0 0 10px 10px;
+            margin-right: 2px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 15px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9em;
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .black-key {
+            width: 30px;
+            height: 130px;
+            background: linear-gradient(to bottom, #444 0%, #222 50%, #000 100%);
+            border-radius: 0 0 8px 8px;
+            margin-left: -16px;
+            margin-right: -16px;
+            z-index: 2;
+            color: white;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-size: 0.7em;
+            font-weight: bold;
+            box-shadow: 
+                0 8px 15px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .key:active, .key.pressed {
+            transform: scale(0.98) translateY(3px);
+        }
+
+        .white-key:active, .white-key.pressed {
+            background: linear-gradient(to bottom, #e8e8e8 0%, #ddd 50%, #ccc 100%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .black-key:active, .black-key.pressed {
+            background: linear-gradient(to bottom, #333 0%, #111 50%, #000 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), inset 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .key.playing {
+            animation: keyGlow 0.3s ease-out;
+        }
+
+        @keyframes keyGlow {
+            0% { box-shadow: 0 0 0 rgba(255, 107, 107, 0.7); }
+            50% { box-shadow: 0 0 30px rgba(255, 107, 107, 0.7); }
+            100% { box-shadow: 0 0 0 rgba(255, 107, 107, 0.7); }
+        }
+
+        .note-indicator {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            opacity: 0;
+            animation: notePopup 0.6s ease-out;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes notePopup {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(-10px) scale(1.1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.8); }
+        }
+
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '✨';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5em;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(31, 38, 135, 0.4);
+        }
+
+        .resource-card i {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .resource-card h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .resource-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 3% auto;
+            padding: 50px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.5s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+            transform: scale(1.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            transform: scale(1.02);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a.youtube {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+        }
+
+        .social-links a.instagram {
+            background: linear-gradient(45deg, #e4405f, #9b59b6, #f39c12);
+            box-shadow: 0 10px 25px rgba(228, 64, 95, 0.3);
+        }
+
+        .social-links a.email {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            box-shadow: 0 10px 25px rgba(52, 73, 94, 0.3);
+        }
+
+        .social-links a.phone {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-links a:hover::before {
+            left: 100%;
+        }
+        
+        .contact-info-list {
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .contact-info-list p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        
+        .contact-info-list a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info-list a:hover {
+            color: #ff6b6b;
+        }
+
+        .lesson-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
+        }
+
+        .video-card h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .user-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-message {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-responsive {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .songs-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .song-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .song-btn:hover, .song-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        #waterfall-viewer {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .waterfall-note {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background: #ff6b6b;
+            border-radius: 5px;
+            transform: translateX(-50%);
+            bottom: 100%;
+            animation: noteFall linear;
+            box-shadow: 0 0 10px #ff6b6b;
+        }
+        
+        @keyframes noteFall {
+            to {
+                transform: translateY(500px) translateX(-50%);
+            }
+        }
+        
+        .small-video-frame {
+            padding-bottom: 75%; /* Adjust for a more square-like frame */
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .piano-container {
+                grid-column: span 1;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: none;
+                min-width: 120px;
+            }
+            
+            .social-links {
+                flex-wrap: wrap;
+            }
+            
+            .white-key {
+                width: 35px;
+                height: 160px;
+            }
+            
+            .black-key {
+                width: 25px;
+                height: 100px;
+                margin-left: -12px;
+                margin-right: -12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-notes" id="floatingNotes"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-music"></i> Chris's Music
+                </div>
+                <div class="auth-section" id="authSection">
+                    <button class="btn btn-primary" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn btn-secondary" onclick="openModal('signupModal')">Sign Up</button>
+                </div>
+                <div class="user-section" id="userSection">
+                    <div class="welcome-message" id="welcomeMessage"></div>
+                    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('home')">
+                <i class="fas fa-home"></i> Home
+            </div>
+            <div class="tab" onclick="showTab('learn')">
+                <i class="fas fa-graduation-cap"></i> Lessons
+            </div>
+            <div class="tab" onclick="showTab('songs')">
+                <i class="fas fa-play-circle"></i> Songs
+            </div>
+            <div class="tab" onclick="showTab('piano')">
+                <i class="fas fa-piano"></i> Piano
+            </div>
+            <div class="tab" onclick="showTab('resources')">
+                <i class="fas fa-book"></i> Resources
+            </div>
+            <div class="tab" onclick="showTab('contact')">
+                <i class="fas fa-envelope"></i> Contact
+            </div>
+        </div>
+
+        <div class="tab-content active" id="home">
+            <div class="main-content">
+                <div class="card">
+                    <h2><i class="fas fa-star"></i> Welcome to Piano Mastery</h2>
+                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px; line-height: 1.6;">
+                        Embark on an extraordinary musical journey with Chris's Music Academy. 
+                        Our innovative approach combines traditional piano techniques with modern technology 
+                        to create an immersive learning experience that will captivate your heart and soul.
+                    </p>
+                    <button class="btn btn-primary" onclick="showTab('learn')">Start Learning Now</button>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-trophy"></i> Why Choose Us?</h2>
+                    <div style="color: rgba(255,255,255,0.8);">
+                        <p>🎵 Interactive 3-octave piano with realistic sounds</p>
+                        <p>🎓 Personalized learning paths for all skill levels</p>
+                        <p>📚 Comprehensive method books and resources</p>
+                        <p>🎥 Exclusive video tutorials from Chris</p>
+                        <p>💫 Beautiful, inspiring learning environment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="learn">
+            <div class="main-content">
+                <div class="card">
+                    <h2><i class="fas fa-graduation-cap"></i> Choose Your Level</h2>
+                    <div class="level-selection">
+                        <button class="level-btn" onclick="selectLevel('beginner')">
+                            <i class="fas fa-seedling"></i> Beginner - Start your musical journey
+                        </button>
+                        <button class="level-btn" onclick="selectLevel('intermediate')">
+                            <i class="fas fa-chart-line"></i> Intermediate - Build your skills
+                        </button>
+                        <button class="level-btn" onclick="selectLevel('advanced')">
+                            <i class="fas fa-crown"></i> Advanced - Master the piano
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2><i class="fas fa-play-circle"></i> Current Lesson</h2>
+                    <div id="currentLesson">
+                        <div id="lessonContent">
+                            <h4 style="color: white;">Welcome to Piano Learning!</h4>
+                            <p style="color: rgba(255,255,255,0.8);">
+                                Choose your level to get started with customized lessons designed just for you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="songs">
+            <div class="card">
+                <h2><i class="fas fa-music"></i> Play Along with These Songs</h2>
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px; line-height: 1.6;">
+                    Here are some great piano tutorials to help you learn and play your favorite songs.
+                </p>
+                <div class="songs-list">
+                    <div class="video-card">
+                        <h4>Dragon Ball Super Ultimate Battle</h4>
+                        <div class="video-responsive small-video-frame">
+                            <iframe src="https://www.youtube.com/embed/h7Fv0k_1Ju0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <h4>Agnus Dei Europa</h4>
+                        <div class="video-responsive small-video-frame">
+                            <iframe src="https://www.youtube.com/embed/JzlSxrbvfJo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <h4>Five Nights at Freddy's</h4>
+                        <div class="video-responsive small-video-frame">
+                            <iframe src="https://www.youtube.com/embed/1z4rTSjNqTc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <h4>FNaF 3, Fire Piano Tutorial</h4>
+                        <div class="video-responsive small-video-frame">
+                            <iframe src="https://www.youtube.com/embed/2dTn8OqXQM8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <h4>Fur Elise Piano Tutorial</h4>
+                        <div class="video-responsive small-video-frame">
+                            <iframe src="https://www.youtube.com/embed/PK_-Dl6j1UM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="piano">
+            <div class="card piano-container">
+                <h2><i class="fas fa-piano"></i> Interactive 3-Octave Piano</h2>
+                <div class="piano-wrapper">
+                    <div class="piano" id="pianoKeys">
+                        <div class="octave">
+                            <div class="key white-key" data-note="C3" data-keyboard="a" onclick="playNote('C3')">C3<br>A</div>
+                            <div class="key black-key" data-note="C#3" data-keyboard="w" onclick="playNote('C#3')">C#<br>W</div>
+                            <div class="key white-key" data-note="D3" data-keyboard="s" onclick="playNote('D3')">D3<br>S</div>
+                            <div class="key black-key" data-note="D#3" data-keyboard="e" onclick="playNote('D#3')">D#<br>E</div>
+                            <div class="key white-key" data-note="E3" data-keyboard="d" onclick="playNote('E3')">E3<br>D</div>
+                            <div class="key white-key" data-note="F3" data-keyboard="f" onclick="playNote('F3')">F3<br>F</div>
+                            <div class="key black-key" data-note="F#3" data-keyboard="t" onclick="playNote('F#3')">F#<br>T</div>
+                            <div class="key white-key" data-note="G3" data-keyboard="g" onclick="playNote('G3')">G3<br>G</div>
+                            <div class="key black-key" data-note="G#3" data-keyboard="y" onclick="playNote('G#3')">G#<br>Y</div>
+                            <div class="key white-key" data-note="A3" data-keyboard="h" onclick="playNote('A3')">A3<br>H</div>
+                            <div class="key black-key" data-note="A#3" data-keyboard="u" onclick="playNote('A#3')">A#<br>U</div>
+                            <div class="key white-key" data-note="B3" data-keyboard="j" onclick="playNote('B3')">B3<br>J</div>
+                        </div>
+                        
+                        <div class="octave">
+                            <div class="key white-key" data-note="C4" data-keyboard="k" onclick="playNote('C4')">C4<br>K</div>
+                            <div class="key black-key" data-note="C#4" data-keyboard="o" onclick="playNote('C#4')">C#<br>O</div>
+                            <div class="key white-key" data-note="D4" data-keyboard="l" onclick="playNote('D4')">D4<br>L</div>
+                            <div class="key black-key" data-note="D#4" data-keyboard="p" onclick="playNote('D#4')">D#<br>P</div>
+                            <div class="key white-key" data-note="E4" data-keyboard=";" onclick="playNote('E4')">E4<br>;</div>
+                            <div class="key white-key" data-note="F4" data-keyboard="'" onclick="playNote('F4')">F4<br>'</div>
+                            <div class="key black-key" data-note="F#4" data-keyboard="[" onclick="playNote('F#4')">F#<br>[</div>
+                            <div class="key white-key" data-note="G4" data-keyboard="]" onclick="playNote('G4')">G4<br>]</div>
+                            <div class="key black-key" data-note="G#4" data-keyboard="\" onclick="playNote('G#4')">G#<br>\</div>
+                            <div class="key white-key" data-note="A4" data-keyboard="z" onclick="playNote('A4')">A4<br>Z</div>
+                            <div class="key black-key" data-note="A#4" data-keyboard="x" onclick="playNote('A#4')">A#<br>X</div>
+                            <div class="key white-key" data-note="B4" data-keyboard="c" onclick="playNote('B4')">B4<br>C</div>
+                        </div>
+                        
+                        <div class="octave">
+                            <div class="key white-key" data-note="C5" data-keyboard="v" onclick="playNote('C5')">C5<br>V</div>
+                            <div class="key black-key" data-note="C#5" data-keyboard="b" onclick="playNote('C#5')">C#<br>B</div>
+                            <div class="key white-key" data-note="D5" data-keyboard="n" onclick="playNote('D5')">D5<br>N</div>
+                            <div class="key black-key" data-note="D#5" data-keyboard="m" onclick="playNote('D#5')">D#<br>M</div>
+                            <div class="key white-key" data-note="E5" data-keyboard="," onclick="playNote('E5')">E5<br>,</div>
+                            <div class="key white-key" data-note="F5" data-keyboard="." onclick="playNote('F5')">F5<br>.</div>
+                            <div class="key black-key" data-note="F#5" data-keyboard="/" onclick="playNote('F#5')">F#<br>/</div>
+                            <div class="key white-key" data-note="G5" data-keyboard="`" onclick="playNote('G5')">G5<br>`</div>
+                            <div class="key black-key" data-note="G#5" data-keyboard="~" onclick="playNote('G#5')">G#<br>~</div>
+                            <div class="key white-key" data-note="A5" data-keyboard="q" onclick="playNote('A5')">A5<br>Q</div>
+                            <div class="key black-key" data-note="A#5" data-keyboard="2" onclick="playNote('A#5')">A#<br>2</div>
+                            <div class="key white-key" data-note="B5" data-keyboard="3" onclick="playNote('B5')">B5<br>3</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 15px;">
+                            🎹 Click keys or use your keyboard to play beautiful piano sounds! 🎹
+                        </p>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.9em;">
+                            (Keyboard shortcuts are listed on each key)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="resources">
+            <div class="resources">
+                <div class="resource-card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Beginner Piano Book</h3>
+                    <p>A comprehensive guide to help you master the fundamentals of piano playing. Perfect for new students.</p>
+                    <a href="https://www.andersonstownmusicschool.com/wp-content/uploads/2015/07/Beginners-Piano-Book.pdf" target="_blank" class="btn btn-primary">Download Book</a>
+                </div>
+                <div class="resource-card">
+                    <i class="fas fa-download"></i>
+                    <h3>Everyone Piano Software</h3>
+                    <p>Download free PC software to practice and play piano on your computer with a real-time visual interface.</p>
+                    <a href="http://www.everyonepiano.com/" target="_blank" class="btn btn-primary">Download Software</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="contact">
+            <div class="contact-section">
+                <h2><i class="fas fa-envelope"></i> Get In Touch</h2>
+                <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 30px;">
+                    Connect with Chris and the community on social media or reach out directly via phone or email.
+                </p>
+                <div class="social-links">
+                    <a href="tel:0796837967" class="phone">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="tel:0732744523" class="phone">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@MUCYOChrisThecla" target="_blank" class="youtube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@M.chris.T" target="_blank" class="youtube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.instagram.com/m.chris.t2011" target="_blank" class="instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="mailto:mucyochristhecla@gmail.com" class="email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+                <div class="contact-info-list">
+                    <p>
+                        <i class="fas fa-phone"></i> **Phone:** <a href="tel:0796837967">0796837967</a>, 
+                        <a href="tel:0732744523">0732744523</a>
+                    </p>
+                    <p>
+                        <i class="fas fa-envelope"></i> **Email:** <a href="mailto:mucyochristhecla@gmail.com">mucyochristhecla@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2 style="color: white; text-align: center; margin-bottom: 25px;"><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2 style="color: white; text-align: center; margin-bottom: 25px;"><i class="fas fa-user-plus"></i> Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Floating Notes Animation
+        function createNote() {
+            const notes = ['♪', '♫', '♬', '♩'];
+            const note = document.createElement('div');
+            note.classList.add('floating-note');
+            note.innerText = notes[Math.floor(Math.random() * notes.length)];
+            note.style.left = Math.random() * 100 + 'vw';
+            note.style.animationDuration = Math.random() * 5 + 5 + 's';
+            note.style.animationDelay = Math.random() * 2 + 's';
+            document.getElementById('floatingNotes').appendChild(note);
+
+            note.addEventListener('animationend', () => {
+                note.remove();
+            });
+        }
+        setInterval(createNote, 500);
+
+        // Tab Switching Logic
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Modal Logic
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Login & Sign Up Logic
+        const adminEmail = 'mucyochristhecla@gmail.com';
+        const adminPassword = 'AbcdefghijK!@';
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (email === adminEmail && password === adminPassword) {
+                alert('Login Successful!');
+                closeModal('loginModal');
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('userSection').style.display = 'block';
+                document.getElementById('welcomeMessage').innerText = `Welcome, Chris!`;
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // In a real application, you would send this to a server.
+            console.log(`User signed up with email: ${email} and password: ${password}`);
+            alert('Sign Up successful! You can now log in.');
+            closeModal('signupModal');
+            openModal('loginModal');
+        });
+
+        function logout() {
+            alert('Logged out successfully!');
+            document.getElementById('userSection').style.display = 'none';
+            document.getElementById('authSection').style.display = 'flex';
+            showTab('home'); // Redirect to home on logout
+        }
+
+        // Lesson Level Selection
+        function selectLevel(level) {
+            const lessonContent = document.getElementById('lessonContent');
+            const levelButtons = document.querySelectorAll('.level-btn');
+            levelButtons.forEach(btn => btn.classList.remove('active'));
+            
+            document.querySelector(`.level-btn[onclick="selectLevel('${level}')"]`).classList.add('active');
+
+            let content = '';
+            switch (level) {
+                case 'beginner':
+                    content = `
+                        <h4 style="color: white;">Beginner Lessons Playlist</h4>
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLP9cbwDiLzdL6IS4-rmzR42ghq3T56XnK&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.8);">
+                            Start your musical journey with this comprehensive playlist of beginner lessons.
+                        </p>
+                    `;
+                    break;
+                case 'intermediate':
+                    content = `
+                        <h4 style="color: white;">Intermediate Lessons Playlist</h4>
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLpOuhygfD7QnB6i-WXpTRYI2cFQalqWNx&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.8);">
+                            Build on your foundational skills and master new techniques with this intermediate playlist.
+                        </p>
+                    `;
+                    break;
+                case 'advanced':
+                    content = `
+                        <h4 style="color: white;">Advanced Lessons Playlist</h4>
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLRj-rMaj2BqxSbtat8zQxZztBLbSyOVbz&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.8);">
+                            Challenge yourself with complex pieces and advanced concepts from this playlist.
+                        </p>
+                    `;
+                    break;
+            }
+            lessonContent.innerHTML = content;
+        }
+
+        // Piano Functionality
+        const notes = {
+            'C3': new Audio('https://chris-music-online.netlify.app/notes/C3.mp3'),
+            'C#3': new Audio('https://chris-music-online.netlify.app/notes/Db3.mp3'),
+            'D3': new Audio('https://chris-music-online.netlify.app/notes/D3.mp3'),
+            'D#3': new Audio('https://chris-music-online.netlify.app/notes/Eb3.mp3'),
+            'E3': new Audio('https://chris-music-online.netlify.app/notes/E3.mp3'),
+            'F3': new Audio('https://chris-music-online.netlify.app/notes/F3.mp3'),
+            'F#3': new Audio('https://chris-music-online.netlify.app/notes/Gb3.mp3'),
+            'G3': new Audio('https://chris-music-online.netlify.app/notes/G3.mp3'),
+            'G#3': new Audio('https://chris-music-online.netlify.app/notes/Ab3.mp3'),
+            'A3': new Audio('https://chris-music-online.netlify.app/notes/A3.mp3'),
+            'A#3': new Audio('https://chris-music-online.netlify.app/notes/Bb3.mp3'),
+            'B3': new Audio('https://chris-music-online.netlify.app/notes/B3.mp3'),
+            'C4': new Audio('https://chris-music-online.netlify.app/notes/C4.mp3'),
+            'C#4': new Audio('https://chris-music-online.netlify.app/notes/Db4.mp3'),
+            'D4': new Audio('https://chris-music-online.netlify.app/notes/D4.mp3'),
+            'D#4': new Audio('https://chris-music-online.netlify.app/notes/Eb4.mp3'),
+            'E4': new Audio('https://chris-music-online.netlify.app/notes/E4.mp3'),
+            'F4': new Audio('https://chris-music-online.netlify.app/notes/F4.mp3'),
+            'F#4': new Audio('https://chris-music-online.netlify.app/notes/Gb4.mp3'),
+            'G4': new Audio('https://chris-music-online.netlify.app/notes/G4.mp3'),
+            'G#4': new Audio('https://chris-music-online.netlify.app/notes/Ab4.mp3'),
+            'A4': new Audio('https://chris-music-online.netlify.app/notes/A4.mp3'),
+            'A#4': new Audio('https://chris-music-online.netlify.app/notes/Bb4.mp3'),
+            'B4': new Audio('https://chris-music-online.netlify.app/notes/B4.mp3'),
+            'C5': new Audio('https://chris-music-online.netlify.app/notes/C5.mp3'),
+            'C#5': new Audio('https://chris-music-online.netlify.app/notes/Db5.mp3'),
+            'D5': new Audio('https://chris-music-online.netlify.app/notes/D5.mp3'),
+            'D#5': new Audio('https://chris-music-online.netlify.app/notes/Eb5.mp3'),
+            'E5': new Audio('https://chris-music-online.netlify.app/notes/E5.mp3'),
+            'F5': new Audio('https://chris-music-online.netlify.app/notes/F5.mp3'),
+            'F#5': new Audio('https://chris-music-online.netlify.app/notes/Gb5.mp3'),
+            'G5': new Audio('https://chris-music-online.netlify.app/notes/G5.mp3'),
+            'G#5': new Audio('https://chris-music-online.netlify.app/notes/Ab5.mp3'),
+            'A5': new Audio('https://chris-music-online.netlify.app/notes/A5.mp3'),
+            'A#5': new Audio('https://chris-music-online.netlify.app/notes/Bb5.mp3'),
+            'B5': new Audio('https://chris-music-online.netlify.app/notes/B5.mp3')
+        };
+        
+        const keyMap = {
+            'a': 'C3', 'w': 'C#3', 's': 'D3', 'e': 'D#3', 'd': 'E3', 'f': 'F3', 't': 'F#3', 'g': 'G3', 'y': 'G#3', 'h': 'A3', 'u': 'A#3', 'j': 'B3',
+            'k': 'C4', 'o': 'C#4', 'l': 'D4', 'p': 'D#4', ';': 'E4', "'": 'F4', '[': 'F#4', ']': 'G4', '\\': 'G#4', 'z': 'A4', 'x': 'A#4', 'c': 'B4',
+            'v': 'C5', 'b': 'C#5', 'n': 'D5', 'm': 'D#5', ',': 'E5', '.': 'F5', '/': 'F#5', '`': 'G5', '~': 'G#5', 'q': 'A5', '2': 'A#5', '3': 'B5'
+        };
+
+        function playNote(note) {
+            if (notes[note]) {
+                const audio = notes[note].cloneNode();
+                audio.play();
+
+                const keyElement = document.querySelector(`.key[data-note="${note}"]`);
+                if (keyElement) {
+                    keyElement.classList.add('playing');
+                    
+                    const indicator = document.createElement('span');
+                    indicator.classList.add('note-indicator');
+                    indicator.textContent = note;
+                    keyElement.appendChild(indicator);
+                    
+                    setTimeout(() => {
+                        keyElement.classList.remove('playing');
+                        indicator.remove();
+                    }, 500);
+                }
+            }
+        }
+        
+        window.addEventListener('keydown', (event) => {
+            const key = event.key.toLowerCase();
+            const note = keyMap[key];
+            if (note) {
+                const keyElement = document.querySelector(`.key[data-note="${note}"]`);
+                if (keyElement && !keyElement.classList.contains('pressed')) {
+                    keyElement.classList.add('pressed');
+                    playNote(note);
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (event) => {
+            const key = event.key.toLowerCase();
+            const note = keyMap[key];
+            if (note) {
+                const keyElement = document.querySelector(`.key[data-note="${note}"]`);
+                if (keyElement) {
+                    keyElement.classList.remove('pressed');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
