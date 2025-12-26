@@ -1,748 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Learn piano online with Chris's Music HUB. Interactive lessons, tutorials, and resources for all skill levels.">
-    <meta name="keywords" content="piano lessons, learn piano, music tutorials, piano online, Chris music">
-    <title>Chris's Music HUB - Learn Piano Online | @MUCYOChrisThecla</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Ad Containers */
-        .ad-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: center;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ad-placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9em;
-        }
-
-        .ad-banner-top {
-            min-height: 90px;
-        }
-
-        .ad-sidebar {
-            min-height: 250px;
-            position: sticky;
-            top: 20px;
-        }
-
-        .ad-inline {
-            min-height: 250px;
-            margin: 30px 0;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .youtube-cta {
-            background: linear-gradient(45deg, #ff0000, #cc0000);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
-        }
-
-        .youtube-cta:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.5);
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        .tabs {
-            display: flex;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 10px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 25px rgba(31, 38, 135, 0.3);
-            overflow-x: auto;
-            flex-wrap: wrap;
-        }
-
-        .tab {
-            flex: 1;
-            min-width: 120px;
-            padding: 12px 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .tab:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .tab.active {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .content-with-ads {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-        }
-
-        .main-content-area {
-            min-width: 0;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(31, 38, 135, 0.6);
-        }
-
-        .card h2 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .video-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.4);
-        }
-
-        .video-card h4 {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .video-responsive {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 15px;
-            margin-bottom: 15px;
-        }
-
-        .video-responsive iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .piano-wrapper {
-            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            overflow-x: auto;
-        }
-
-        .piano {
-            display: flex;
-            justify-content: center;
-            background: linear-gradient(to bottom, #2c2c2c 0%, #1a1a1a 100%);
-            padding: 25px;
-            border-radius: 20px;
-            min-width: min-content;
-        }
-
-        .octave {
-            display: flex;
-            position: relative;
-        }
-
-        .key {
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.1s ease;
-        }
-
-        .white-key {
-            width: 45px;
-            height: 200px;
-            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 50%, #e8e8e8 100%);
-            border: 2px solid #ddd;
-            border-radius: 0 0 10px 10px;
-            margin-right: 2px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 15px;
-            font-weight: bold;
-            color: #333;
-            font-size: 0.8em;
-        }
-
-        .black-key {
-            width: 30px;
-            height: 130px;
-            background: linear-gradient(to bottom, #444 0%, #222 50%, #000 100%);
-            border-radius: 0 0 8px 8px;
-            margin-left: -16px;
-            margin-right: -16px;
-            z-index: 2;
-            color: white;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 10px;
-            font-size: 0.7em;
-            font-weight: bold;
-        }
-
-        .key:active, .key.pressed {
-            transform: scale(0.98) translateY(3px);
-        }
-
-        .white-key:active, .white-key.pressed {
-            background: linear-gradient(to bottom, #e8e8e8 0%, #ddd 50%, #ccc 100%);
-        }
-
-        .black-key:active, .black-key.pressed {
-            background: linear-gradient(to bottom, #333 0%, #111 50%, #000 100%);
-        }
-
-        .social-section {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 30px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin: 20px 0;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .social-links a {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.8em;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a.youtube {
-            background: linear-gradient(45deg, #ff0000, #cc0000);
-        }
-
-        .social-links a.instagram {
-            background: linear-gradient(45deg, #e4405f, #9b59b6, #f39c12);
-        }
-
-        .social-links a:hover {
-            transform: translateY(-5px) scale(1.1);
-        }
-
-        .subscribe-widget {
-            background: linear-gradient(45deg, #ff0000, #cc0000);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 20px 0;
-            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.3);
-        }
-
-        .subscribe-widget h3 {
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-
-        .subscribe-widget p {
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .stat-card .number {
-            font-size: 2em;
-            font-weight: bold;
-            color: white;
-        }
-
-        .stat-card .label {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 1024px) {
-            .content-with-ads {
-                grid-template-columns: 1fr;
-            }
-            
-            .ad-sidebar {
-                position: relative;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2em;
-            }
-            
-            .white-key {
-                width: 35px;
-                height: 160px;
-            }
-            
-            .black-key {
-                width: 25px;
-                height: 100px;
-                margin-left: -12px;
-                margin-right: -12px;
-            }
-            
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .level-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .level-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1em;
-        }
-
-        .level-btn:hover, .level-btn.active {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            transform: scale(1.05);
-        }
-
-        .contact-info {
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .contact-info p {
-            margin: 10px 0;
-            font-size: 1.1em;
-        }
-
-        .contact-info a {
-            color: #feca57;
-            text-decoration: none;
-        }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .resource-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .resource-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .resource-card i {
-            font-size: 3em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .resource-card h3 {
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        .resource-card p {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn piano online with Chris's Music HUB. Interactive lessons, tutorials, and resources for all skill levels.">
+<meta name="keywords" content="piano lessons, learn piano, music tutorials, piano online, Chris music">
+<title>Chris's Music HUB - Learn Piano Online</title>
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<link rel="preconnect" href="https://googleads.g.doubleclick.net">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:#fff;overflow-x:hidden
+}
+.container{max-width:1400px;margin:auto;padding:20px}
+
+/* ===== AD OPTIMIZATION ===== */
+.ad-slot{
+width:100%;
+margin:24px 0;
+min-height:90px;
+display:block;
+text-align:center;
+background:#fff;
+}
+.ad-top{min-height:90px}
+.ad-inline{min-height:250px}
+.ad-sidebar{min-height:600px;position:sticky;top:100px}
+.ad-mobile-sticky{display:none}
+
+/* Mobile sticky ad */
+@media(max-width:768px){
+.ad-mobile-sticky{
+display:block;
+position:fixed;
+bottom:0;left:0;right:0;
+min-height:60px;
+z-index:999;
+background:#fff
+}
+}
+
+/* Layout */
+header{
+background:rgba(255,255,255,0.15);
+padding:25px;border-radius:25px;margin-bottom:20px
+}
+.logo{
+font-size:2.2em;font-weight:bold
+}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.tab{
+padding:12px 20px;
+border-radius:15px;
+cursor:pointer;
+background:rgba(255,255,255,0.15)
+}
+.tab.active{background:#ff6b6b}
+
+.content-with-ads{
+display:grid;
+grid-template-columns:1fr 300px;
+gap:20px
+}
+@media(max-width:1024px){
+.content-with-ads{grid-template-columns:1fr}
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+padding:30px;border-radius:25px;margin-bottom:20px
+}
+h2{margin-bottom:15px}
+
+footer{
+margin-top:40px;
+text-align:center;
+opacity:.8
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+*{animation:none!important;transition:none!important}
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Top Banner Ad -->
-        <div class="ad-container ad-banner-top">
-            <div class="ad-placeholder">
-                📢 Top Banner Ad Space (728x90 or Responsive)<br>
-                <small>Google AdSense / Media.net placement</small>
-            </div>
-        </div>
 
-        <header>
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-music"></i> Chris's Music HUB
-                </div>
-                <a href="https://www.youtube.com/@MUCYOChrisThecla" target="_blank" class="youtube-cta">
-                    <i class="fab fa-youtube"></i> Subscribe Now!
-                </a>
-            </div>
-        </header>
+<div class="container">
 
-        <div class="tabs">
-            <div class="tab active" onclick="showTab('home')">
-                <i class="fas fa-home"></i> Home
-            </div>
-            <div class="tab" onclick="showTab('learn')">
-                <i class="fas fa-graduation-cap"></i> Lessons
-            </div>
-            <div class="tab" onclick="showTab('songs')">
-                <i class="fas fa-play-circle"></i> Songs
-            </div>
-            <div class="tab" onclick="showTab('piano')">
-                <i class="fas fa-piano"></i> Piano
-            </div>
-            <div class="tab" onclick="showTab('resources')">
-                <i class="fas fa-book"></i> Resources
-            </div>
-            <div class="tab" onclick="showTab('contact')">
-                <i class="fas fa-envelope"></i> Contact
-            </div>
-        </div>
+<!-- TOP BANNER AD -->
+<div class="ad-slot ad-top" aria-label="Advertisement">
+<!-- GOOGLE ADSENSE CODE HERE -->
+</div>
 
-        <div class="content-with-ads">
-            <div class="main-content-area">
-                <!-- Home Tab -->
-                <div class="tab-content active" id="home">
-                    <div class="subscribe-widget">
-                        <h3><i class="fab fa-youtube"></i> Join the Chris's Music Community!</h3>
-                        <p>Subscribe to my YouTube channel for weekly piano tutorials, song covers, and music lessons!</p>
-                        <a href="https://www.youtube.com/@MUCYOChrisThecla" target="_blank" class="btn btn-primary" style="background: white; color: #ff0000;">
-                            <i class="fab fa-youtube"></i> Subscribe to @MUCYOChrisThecla
-                        </a>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="number">100+</div>
-                                <div class="label">Videos</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="number">1K+</div>
-                                <div class="label">Subscribers</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="number">5K+</div>
-                                <div class="label">Views</div>
-                            </div>
-                        </div>
-                    </div>
+<header>
+<div class="logo"><i class="fas fa-music"></i> Chris's Music HUB</div>
+</header>
 
-                    <div class="card">
-                        <h2><i class="fas fa-star"></i> Welcome to Piano Mastery</h2>
-                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px; line-height: 1.6;">
-                            Embark on an extraordinary musical journey with Chris's Music HUB. 
-                            Learn piano with interactive lessons, video tutorials, and a supportive community.
-                        </p>
-                        <button class="btn btn-primary" onclick="showTab('learn')">Start Learning Now</button>
-                    </div>
+<div class="tabs">
+<div class="tab active">Home</div>
+<div class="tab">Lessons</div>
+<div class="tab">Songs</div>
+<div class="tab">Piano</div>
+<div class="tab">Contact</div>
+</div>
 
-                    <!-- Inline Ad -->
-                    <div class="ad-container ad-inline">
-                        <div class="ad-placeholder">
-                            📢 Inline Ad Space (300x250 or Responsive)<br>
-                            <small>Google AdSense placement</small>
-                        </div>
-                    </div>
+<div class="content-with-ads">
 
-                    <div class="card">
-                        <h2><i class="fas fa-trophy"></i> Why Choose Us?</h2>
-                        <div style="color: rgba(255,255,255,0.8); line-height: 2;">
-                            <p>🎵 Interactive 3-octave piano with realistic sounds</p>
-                            <p>🎓 Personalized learning paths for all skill levels</p>
-                            <p>📚 Comprehensive method books and resources</p>
-                            <p>🎥 Exclusive video tutorials from Chris</p>
-                            <p>💫 Beautiful, inspiring learning environment</p>
-                            <p>🌟 Active YouTube community with regular updates</p>
-                        </div>
-                    </div>
-                </div>
+<!-- MAIN CONTENT -->
+<main>
 
-                <!-- Lessons Tab -->
-                <div class="tab-content" id="learn">
-                    <div class="card">
-                        <h2><i class="fas fa-graduation-cap"></i> Choose Your Level</h2>
-                        <div class="level-selection">
-                            <button class="level-btn" onclick="selectLevel('beginner')">
-                                <i class="fas fa-seedling"></i> Beginner
-                            </button>
-                            <button class="level-btn" onclick="selectLevel('intermediate')">
-                                <i class="fas fa-chart-line"></i> Intermediate
-                            </button>
-                            <button class="level-btn" onclick="selectLevel('advanced')">
-                                <i class="fas fa-crown"></i> Advanced
-                            </button>
-                        </div>
-                    </div>
+<div class="card">
+<h2>Welcome to Piano Mastery</h2>
+<p>Learn piano online with interactive lessons, tutorials, and real practice tools.</p>
+</div>
 
-                    <div class="card" id="lessonContent">
-                        <h2><i class="fas fa-play-circle"></i> Select a Level to Begin</h2>
-                        <p style="color: rgba(255,255,255,0.8);">Choose your skill level above to access customized video lessons and tutorials.</p>
-                    </div>
+<!-- INLINE AD -->
+<div class="ad-slot ad-inline" aria-label="Advertisement">
+<!-- GOOGLE ADSENSE CODE HERE -->
+</div>
 
-                    <!-- Inline Ad -->
-                    <div class="ad-container ad-inline">
-                        <div class="ad-placeholder">
-                            📢 Inline Ad Space (300x250 or Responsive)<br>
-                            <small>Google AdSense placement</small>
-                        </div>
-                    </div>
-                </div>
+<div class="card">
+<h2>Why Choose Chris's Music HUB?</h2>
+<p>Interactive piano, structured lessons, YouTube tutorials, and community support.</p>
+</div>
 
-                <!-- Songs Tab -->
-                <div class="tab-content" id="songs">
-                    <div class="card">
-                        <h2><i class="fas fa-music"></i> Play Along with These Songs</h2>
-                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">
-                            Learn your favorite songs with step-by-step tutorials from Chris's Music HUB YouTube channel!
-                        </p>
-                        <div class="video-grid">
-                            <div class="video-card">
-                                <h4>Dragon Ball Super Ultimate Battle</h4>
-                                <div class="video-responsive">
-                                    <iframe src="https://www.youtube.com/embed/h7Fv0k_1Ju0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div class="video-card">
-                                <h4>Agnus Dei Europa</h4>
-                                <div class="video-responsive">
-                                    <iframe src="https://www.youtube.com/embed/JzlSxrbvfJo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div class="video-card">
-                                <h4>Five Nights at Freddy's</h4>
-                                <div class="video-responsive">
-                                    <iframe src="https://www.youtube.com/embed/1z4rTSjNqTc" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div class="video-card">
-                                <h4>FNaF 3, Fire Piano Tutorial</h4>
-                                <div class="video-responsive">
-                                    <iframe src="https://www.youtube.com/embed/2dTn8OqXQM8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div class="video-card">
-                                <h4>Fur Elise Piano Tutorial</h4>
-                                <div class="video-responsive">
-                                    <iframe src="https://www.youtube.com/embed/PK_-Dl6j1UM" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+</main>
 
-                <!-- Piano Tab -->
-                <div class="tab-content" id="piano">
-                    <div class="card">
-                        <h2><i class="fas fa-piano"></i> Interactive 3-Octave Piano</h2>
-                        <div class="piano-wrapper">
-                            <div class="piano" id="pianoKeys">
-                                <div class="octave">
-                                    <div class="key white-key" data-note="C3" onclick="playNote('C3')">C3<br>A</div>
-                                    <div class="key black-key" data-note="C#3" onclick="playNote('C#3')">C#<br>W</div>
-                                    <div class="key white-key" data-note="D3" onclick="playNote('D3')">D3<br>S</div>
-                                    <div class="key black-key" data-note="D#3" onclick="playNote('D#3')">D#<br>E</div>
-                                    <div class="key white-key" data-note="E3" onclick="playNote('E3')">E3<br>D</div>
-                                    <div class="key white-key" data-note="F3" onclick="playNote('F3')">F3<br>F</div>
-                                    <div class="key black-key" data-note="F#3" onclick="playNote('F#3')">F#<br>T</div>
-                                    <div class="key white-key" data-note="G3" onclick="playNote('G3')">G3<br>G</div>
-                                    <div class="key black-key" data-note="G#3" onclick="playNote('G#3')">G#<br>Y</div>
-                                    <div class="key white-key" data-note="A3" onclick="playNote('A3')">A3<br>H</div>
-                                    <div class="key black-key" data-note="A#3" onclick="playNote('A#3')">A#<br>U</div>
-                                    <div class="key white-key" data-note="B3" onclick="playNote('B3')">B3<br>J</div>
-                                </div>
-                                <div class="octave">
-                                    <div class="key white-key" data-note="C4" onclick="playNote('C4')">C4<br>K</div>
-                                    <div class="key black-key" data-note="C#4" onclick="playNote('C#4')">C#<br>O</div>
-                                    <div class="key white-key" data-note="D4" onclick="playNote('D4')">D4<br>L</div>
-                                    <div class="key black-key" data-note="D#4" onclick="playNote('D#4')">D#<br>P</div>
-                                    <div class="key white-key" data-note="E4" onclick="playNote('E4')">E4<br>;</div>
-                                    <div class="key white-key" data-note="F4" onclick="playNote('F4')">F4<br>'</div>
-                                    <div class="key black-key" data-note="F#4" onclick="playNote('F#4')">F#<br>[</div>
-                                    <div class="key white-key" data-note="G4" onclick="playNote('G4')">G4<br>]</div>
-                                    <div class="key black-key" data-note="G#4" onclick="playNote('G#4')">G#<br>\</div>
-                                    <div class="key white-key" data-note="A4" onclick="playNote('A4')">A4<br>Z</div>
-                                    <div class="key black-key" data-note="A#4" onclick="playNote('A#4')">A#<br>X</div>
-                                    <div class="key white-key" data-note="B4" onclick="playNote('B4')">B4<br>C</div>
-                                </div>
-                                <div class="octave">
-                                    <div class="key white-key" data-note="C5" onclick="playNote('C5')">C5<br>V</div>
-                                    <div class="key black-key" data-note="C#5" onclick="playNote('C#5')">C#<br>B</div>
-                                    <div
+<!-- SIDEBAR AD -->
+<aside class="ad-slot ad-sidebar" aria-label="Advertisement">
+<!-- GOOGLE ADSENSE CODE HERE -->
+</aside>
+
+</div>
+
+<footer>
+<p>© 2025 Chris's Music HUB | Subscribe: @MUCYOChrisThecla</p>
+</footer>
+
+</div>
+
+<!-- MOBILE STICKY AD -->
+<div class="ad-slot ad-mobile-sticky" aria-label="Advertisement">
+<!-- GOOGLE ADSENSE CODE HERE -->
+</div>
+
+<!-- LAZY LOAD ADS -->
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+const ads=document.querySelectorAll(".ad-slot");
+const io=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+e.target.classList.add("loaded");
+io.unobserve(e.target);
+}
+});
+},{rootMargin:"200px"});
+ads.forEach(ad=>io.observe(ad));
+});
+</script>
+
+</body>
+</html>
