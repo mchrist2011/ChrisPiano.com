@@ -167,6 +167,103 @@ io.unobserve(e.target);
 ads.forEach(ad=>io.observe(ad));
 });
 </script>
+<script>
+/* =========================
+   TAB SYSTEM
+========================= */
+function showTab(tabId) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  document.getElementById(tabId)?.classList.add('active');
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    if (tab.getAttribute("onclick")?.includes(tabId)) {
+      tab.classList.add('active');
+    }
+  });
+}
+
+/* =========================
+   LESSON LEVEL SYSTEM
+========================= */
+function selectLevel(level) {
+  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const lessons = {
+    beginner: "Learn basic notes, finger positioning, and simple melodies.",
+    intermediate: "Practice chords, scales, rhythm, and coordination.",
+    advanced: "Master speed, advanced techniques, and improvisation."
+  };
+
+  document.getElementById("lessonContent").innerHTML = `
+    <h2>${level.toUpperCase()} LEVEL</h2>
+    <p style="color:rgba(255,255,255,0.85);line-height:1.6">
+      ${lessons[level]}
+    </p>
+  `;
+}
+
+/* =========================
+   PIANO AUDIO ENGINE
+========================= */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+const notes = {
+  C3:130.81,"C#3":138.59,D3:146.83,"D#3":155.56,E3:164.81,
+  F3:174.61,"F#3":185.00,G3:196.00,"G#3":207.65,
+  A3:220.00,"A#3":233.08,B3:246.94,
+  C4:261.63,"C#4":277.18,D4:293.66,"D#4":311.13,E4:329.63,
+  F4:349.23,"F#4":369.99,G4:392.00,"G#4":415.30,
+  A4:440.00,"A#4":466.16,B4:493.88,
+  C5:523.25,"C#5":554.37,D5:587.33
+};
+
+function playNote(note) {
+  if (!notes[note]) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.frequency.value = notes[note];
+  osc.type = "sine";
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.7);
+
+  const key = document.querySelector(`[data-note="${note}"]`);
+  if (key) {
+    key.classList.add("pressed");
+    setTimeout(() => key.classList.remove("pressed"), 150);
+  }
+}
+
+/* =========================
+   KEYBOARD SUPPORT
+========================= */
+document.addEventListener("keydown", e => {
+  const map = {
+    a:"C3",w:"C#3",s:"D3",e:"D#3",d:"E3",
+    f:"F3",t:"F#3",g:"G3",y:"G#3",
+    h:"A3",u:"A#3",j:"B3",
+    k:"C4",o:"C#4",l:"D4",p:"D#4",
+    ";":"E4","'":"F4","[":"F#4","]":"G4",
+    "\\":"G#4",z:"A4",x:"A#4",c:"B4",
+    v:"C5",b:"C#5",n:"D5"
+  };
+  if (map[e.key]) playNote(map[e.key]);
+});
+</script>
+
 
 </body>
 </html>
+
