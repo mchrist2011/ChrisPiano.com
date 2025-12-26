@@ -20,250 +20,160 @@ color:#fff;overflow-x:hidden
 }
 .container{max-width:1400px;margin:auto;padding:20px}
 
-/* ===== AD OPTIMIZATION ===== */
-.ad-slot{
-width:100%;
-margin:24px 0;
-min-height:90px;
-display:block;
-text-align:center;
-background:#fff;
-}
-.ad-top{min-height:90px}
+/* ADS */
+.ad-slot{width:100%;margin:24px 0;min-height:90px;background:#fff}
 .ad-inline{min-height:250px}
 .ad-sidebar{min-height:600px;position:sticky;top:100px}
 .ad-mobile-sticky{display:none}
-
-/* Mobile sticky ad */
 @media(max-width:768px){
-.ad-mobile-sticky{
-display:block;
-position:fixed;
-bottom:0;left:0;right:0;
-min-height:60px;
-z-index:999;
-background:#fff
-}
+.ad-mobile-sticky{display:block;position:fixed;bottom:0;left:0;right:0;min-height:60px;z-index:999}
 }
 
-/* Layout */
-header{
-background:rgba(255,255,255,0.15);
-padding:25px;border-radius:25px;margin-bottom:20px
-}
-.logo{
-font-size:2.2em;font-weight:bold
-}
+/* HEADER */
+header{background:rgba(255,255,255,.15);padding:25px;border-radius:25px;margin-bottom:20px}
+.logo{font-size:2.2em;font-weight:bold}
+
+/* TABS */
 .tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.tab{
-padding:12px 20px;
-border-radius:15px;
-cursor:pointer;
-background:rgba(255,255,255,0.15)
-}
+.tab{padding:12px 20px;border-radius:15px;cursor:pointer;background:rgba(255,255,255,.15)}
 .tab.active{background:#ff6b6b}
 
-.content-with-ads{
-display:grid;
-grid-template-columns:1fr 300px;
-gap:20px
-}
-@media(max-width:1024px){
-.content-with-ads{grid-template-columns:1fr}
-}
+/* LAYOUT */
+.content-with-ads{display:grid;grid-template-columns:1fr 300px;gap:20px}
+@media(max-width:1024px){.content-with-ads{grid-template-columns:1fr}}
 
-.card{
-background:rgba(255,255,255,0.15);
-padding:30px;border-radius:25px;margin-bottom:20px
-}
-h2{margin-bottom:15px}
+.card{background:rgba(255,255,255,.15);padding:30px;border-radius:25px;margin-bottom:20px}
+.tab-content{display:none}
+.tab-content.active{display:block}
 
-footer{
-margin-top:40px;
-text-align:center;
-opacity:.8
-}
+/* LESSONS */
+.level-btn{padding:10px 18px;border-radius:12px;border:none;margin-right:8px;cursor:pointer}
+.level-btn.active{background:#ff6b6b;color:#fff}
 
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce){
-*{animation:none!important;transition:none!important}
+/* PIANO */
+.piano{display:flex;margin-top:20px}
+.key{
+width:45px;height:180px;
+background:#fff;border:1px solid #000;
+display:flex;align-items:flex-end;justify-content:center;
+color:#000;cursor:pointer
 }
+.key.black{
+width:30px;height:120px;background:#000;color:#fff;
+margin-left:-15px;margin-right:-15px;z-index:2
+}
+.key.pressed{background:#ff6b6b!important;color:#fff}
+
+/* FOOTER */
+footer{text-align:center;margin-top:40px;opacity:.8}
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-<!-- TOP BANNER AD -->
-<div class="ad-slot ad-top" aria-label="Advertisement">
-<!-- GOOGLE ADSENSE CODE HERE -->
-</div>
+<div class="ad-slot"></div>
 
 <header>
 <div class="logo"><i class="fas fa-music"></i> Chris's Music HUB</div>
 </header>
 
 <div class="tabs">
-<div class="tab active">Home</div>
-<div class="tab">Lessons</div>
-<div class="tab">Songs</div>
-<div class="tab">Piano</div>
-<div class="tab">Contact</div>
+<div class="tab active" onclick="showTab('home')">Home</div>
+<div class="tab" onclick="showTab('lessons')">Lessons</div>
+<div class="tab" onclick="showTab('piano')">Piano</div>
+<div class="tab" onclick="showTab('contact')">Contact</div>
 </div>
 
 <div class="content-with-ads">
-
-<!-- MAIN CONTENT -->
 <main>
 
-<div class="card">
-<h2>Welcome to Piano Mastery</h2>
-<p>Learn piano online with interactive lessons, tutorials, and real practice tools.</p>
+<!-- HOME -->
+<div id="home" class="tab-content active card">
+<h2>Welcome</h2>
+<p>Learn piano online with interactive tools and structured lessons.</p>
 </div>
 
-<!-- INLINE AD -->
-<div class="ad-slot ad-inline" aria-label="Advertisement">
-<!-- GOOGLE ADSENSE CODE HERE -->
+<div class="ad-slot ad-inline"></div>
+
+<!-- LESSONS -->
+<div id="lessons" class="tab-content card">
+<h2>Piano Lessons</h2>
+<button class="level-btn" onclick="selectLevel('beginner',this)">Beginner</button>
+<button class="level-btn" onclick="selectLevel('intermediate',this)">Intermediate</button>
+<button class="level-btn" onclick="selectLevel('advanced',this)">Advanced</button>
+<div id="lessonContent" style="margin-top:15px"></div>
 </div>
 
-<div class="card">
-<h2>Why Choose Chris's Music HUB?</h2>
-<p>Interactive piano, structured lessons, YouTube tutorials, and community support.</p>
+<!-- PIANO -->
+<div id="piano" class="tab-content card">
+<h2>Virtual Piano</h2>
+<div class="piano">
+<div class="key" data-note="C4" onclick="playNote('C4')">C</div>
+<div class="key black" data-note="C#4" onclick="playNote('C#4')"></div>
+<div class="key" data-note="D4" onclick="playNote('D4')">D</div>
+<div class="key black" data-note="D#4" onclick="playNote('D#4')"></div>
+<div class="key" data-note="E4" onclick="playNote('E4')">E</div>
+<div class="key" data-note="F4" onclick="playNote('F4')">F</div>
+<div class="key black" data-note="F#4" onclick="playNote('F#4')"></div>
+<div class="key" data-note="G4" onclick="playNote('G4')">G</div>
+<div class="key black" data-note="G#4" onclick="playNote('G#4')"></div>
+<div class="key" data-note="A4" onclick="playNote('A4')">A</div>
+<div class="key black" data-note="A#4" onclick="playNote('A#4')"></div>
+<div class="key" data-note="B4" onclick="playNote('B4')">B</div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="tab-content card">
+<h2>Contact</h2>
+<p>YouTube: Chris's Music HUB</p>
+<p>Email: coming soon</p>
 </div>
 
 </main>
 
-<!-- SIDEBAR AD -->
-<aside class="ad-slot ad-sidebar" aria-label="Advertisement">
-<!-- GOOGLE ADSENSE CODE HERE -->
-</aside>
-
+<aside class="ad-slot ad-sidebar"></aside>
 </div>
 
-<footer>
-<p>© 2025 Chris's Music HUB | Subscribe: @MUCYOChrisThecla</p>
-</footer>
-
+<footer>© 2025 Chris's Music HUB</footer>
 </div>
 
-<!-- MOBILE STICKY AD -->
-<div class="ad-slot ad-mobile-sticky" aria-label="Advertisement">
-<!-- GOOGLE ADSENSE CODE HERE -->
-</div>
+<div class="ad-slot ad-mobile-sticky"></div>
 
-<!-- LAZY LOAD ADS -->
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
-const ads=document.querySelectorAll(".ad-slot");
-const io=new IntersectionObserver(entries=>{
-entries.forEach(e=>{
-if(e.isIntersecting){
-e.target.classList.add("loaded");
-io.unobserve(e.target);
-}
-});
-},{rootMargin:"200px"});
-ads.forEach(ad=>io.observe(ad));
-});
-</script>
-<script>
-/* =========================
-   TAB SYSTEM
-========================= */
-function showTab(tabId) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-  document.getElementById(tabId)?.classList.add('active');
-
-  document.querySelectorAll('.tab').forEach(tab => {
-    if (tab.getAttribute("onclick")?.includes(tabId)) {
-      tab.classList.add('active');
-    }
-  });
+/* TAB SYSTEM */
+function showTab(id){
+document.querySelectorAll('.tab,.tab-content').forEach(e=>e.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+[...document.querySelectorAll('.tab')].find(t=>t.innerText.toLowerCase().includes(id)).classList.add('active');
 }
 
-/* =========================
-   LESSON LEVEL SYSTEM
-========================= */
-function selectLevel(level) {
-  document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-
-  const lessons = {
-    beginner: "Learn basic notes, finger positioning, and simple melodies.",
-    intermediate: "Practice chords, scales, rhythm, and coordination.",
-    advanced: "Master speed, advanced techniques, and improvisation."
-  };
-
-  document.getElementById("lessonContent").innerHTML = `
-    <h2>${level.toUpperCase()} LEVEL</h2>
-    <p style="color:rgba(255,255,255,0.85);line-height:1.6">
-      ${lessons[level]}
-    </p>
-  `;
-}
-
-/* =========================
-   PIANO AUDIO ENGINE
-========================= */
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-
-const notes = {
-  C3:130.81,"C#3":138.59,D3:146.83,"D#3":155.56,E3:164.81,
-  F3:174.61,"F#3":185.00,G3:196.00,"G#3":207.65,
-  A3:220.00,"A#3":233.08,B3:246.94,
-  C4:261.63,"C#4":277.18,D4:293.66,"D#4":311.13,E4:329.63,
-  F4:349.23,"F#4":369.99,G4:392.00,"G#4":415.30,
-  A4:440.00,"A#4":466.16,B4:493.88,
-  C5:523.25,"C#5":554.37,D5:587.33
+/* LESSONS */
+function selectLevel(level,btn){
+document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+const text={
+beginner:"Learn notes, posture, and simple melodies.",
+intermediate:"Chords, scales, rhythm, coordination.",
+advanced:"Speed, advanced techniques, improvisation."
 };
-
-function playNote(note) {
-  if (!notes[note]) return;
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.frequency.value = notes[note];
-  osc.type = "sine";
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.7);
-
-  const key = document.querySelector(`[data-note="${note}"]`);
-  if (key) {
-    key.classList.add("pressed");
-    setTimeout(() => key.classList.remove("pressed"), 150);
-  }
+lessonContent.innerHTML=`<h3>${level.toUpperCase()}</h3><p>${text[level]}</p>`;
 }
 
-/* =========================
-   KEYBOARD SUPPORT
-========================= */
-document.addEventListener("keydown", e => {
-  const map = {
-    a:"C3",w:"C#3",s:"D3",e:"D#3",d:"E3",
-    f:"F3",t:"F#3",g:"G3",y:"G#3",
-    h:"A3",u:"A#3",j:"B3",
-    k:"C4",o:"C#4",l:"D4",p:"D#4",
-    ";":"E4","'":"F4","[":"F#4","]":"G4",
-    "\\":"G#4",z:"A4",x:"A#4",c:"B4",
-    v:"C5",b:"C#5",n:"D5"
-  };
-  if (map[e.key]) playNote(map[e.key]);
-});
+/* PIANO */
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+const notes={C4:261.63,"C#4":277.18,D4:293.66,"D#4":311.13,E4:329.63,F4:349.23,"F#4":369.99,G4:392,"G#4":415.3,A4:440,"A#4":466.16,B4:493.88};
+function playNote(n){
+if(ctx.state==="suspended")ctx.resume();
+const o=ctx.createOscillator(),g=ctx.createGain();
+o.frequency.value=notes[n];o.connect(g);g.connect(ctx.destination);
+g.gain.setValueAtTime(.3,ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.7);
+o.start();o.stop(ctx.currentTime+.7);
+const k=document.querySelector(`[data-note="${n}"]`);
+k.classList.add("pressed");setTimeout(()=>k.classList.remove("pressed"),150);
+}
 </script>
-
-
 </body>
 </html>
-
