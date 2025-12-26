@@ -6,174 +6,279 @@
 <meta name="description" content="Learn piano online with Chris's Music HUB. Interactive lessons, tutorials, and resources for all skill levels.">
 <meta name="keywords" content="piano lessons, learn piano, music tutorials, piano online, Chris music">
 <title>Chris's Music HUB - Learn Piano Online</title>
-
-<link rel="preconnect" href="https://pagead2.googlesyndication.com">
-<link rel="preconnect" href="https://googleads.g.doubleclick.net">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:#fff;overflow-x:hidden
-}
-.container{max-width:1400px;margin:auto;padding:20px}
+/* ===== BASIC RESET & BODY ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;overflow-x:hidden;transition:all 0.3s;}
+.container{max-width:1400px;margin:auto;padding:20px;}
+header,footer{background:rgba(0,0,0,0.3);padding:20px;border-radius:15px;margin-bottom:20px;text-align:center;}
+.logo{font-size:2em;font-weight:bold;display:inline-flex;align-items:center;gap:10px;}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.tab{padding:10px 15px;border-radius:15px;cursor:pointer;background:rgba(255,255,255,0.15);transition:0.3s;}
+.tab.active{background:#ff6b6b;}
+.content-with-ads{display:grid;grid-template-columns:1fr 300px;gap:20px;}
+@media(max-width:1024px){.content-with-ads{grid-template-columns:1fr;}}
+.card{background:rgba(255,255,255,0.15);padding:20px;border-radius:20px;margin-bottom:20px;}
+h2{margin-bottom:10px;}
+/* ===== AD STYLES ===== */
+.ad-slot{width:100%;margin:15px 0;background:#fff;text-align:center;color:#000;min-height:90px;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.ad-inline{min-height:250px;}
+.ad-sidebar{min-height:600px;position:sticky;top:100px;}
+.ad-mobile-sticky{display:none;}
+@media(max-width:768px){.ad-mobile-sticky{display:block;position:fixed;bottom:0;left:0;right:0;min-height:60px;z-index:999;background:#fff;}}
 
-/* ADS */
-.ad-slot{width:100%;margin:24px 0;min-height:90px;background:#fff}
-.ad-inline{min-height:250px}
-.ad-sidebar{min-height:600px;position:sticky;top:100px}
-.ad-mobile-sticky{display:none}
-@media(max-width:768px){
-.ad-mobile-sticky{display:block;position:fixed;bottom:0;left:0;right:0;min-height:60px;z-index:999}
-}
+/* ===== XP SYSTEM ===== */
+.xp-bar{background:rgba(255,255,255,0.2);border-radius:10px;overflow:hidden;margin:10px 0;}
+.xp-fill{background:#ff6b6b;height:15px;width:0%;transition:width 0.3s;}
 
-/* HEADER */
-header{background:rgba(255,255,255,.15);padding:25px;border-radius:25px;margin-bottom:20px}
-.logo{font-size:2.2em;font-weight:bold}
+/* ===== PIANO ===== */
+.piano-wrapper{overflow-x:auto;padding:10px;background:rgba(0,0,0,0.3);border-radius:15px;margin-bottom:20px;}
+.piano{display:flex;position:relative;}
+.octave{display:flex;}
+.key{position:relative;cursor:pointer;user-select:none;transition:0.1s;margin-right:2px;}
+.white-key{width:40px;height:200px;background:#fff;border:1px solid #ccc;border-radius:0 0 5px 5px;color:#000;display:flex;align-items:flex-end;justify-content:center;font-size:0.8em;padding-bottom:5px;}
+.black-key{width:25px;height:130px;background:#000;color:#fff;z-index:2;margin-left:-12px;margin-right:-12px;display:flex;align-items:flex-end;justify-content:center;font-size:0.7em;padding-bottom:5px;}
+.key.pressed{transform:scale(0.95);}
 
-/* TABS */
-.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.tab{padding:12px 20px;border-radius:15px;cursor:pointer;background:rgba(255,255,255,.15)}
-.tab.active{background:#ff6b6b}
+/* ===== THEMES ===== */
+body.theme-dark{background:#111;color:#fff;}
+body.theme-light{background:#eee;color:#000;}
+body.theme-ocean{background:#0f4c75;}
+body.theme-purple{background:#6a0dad;}
+body.theme-neon{background:#39ff14;color:#000;}
+body.theme-gold{background:#ffd700;color:#000;}
+body.theme-sunset{background:linear-gradient(135deg,#ff416c,#ff4b2b);}
+body.theme-matrix{background:#000;color:#0f0;}
+body.theme-minimal{background:#f5f5f5;color:#333;}
+body.theme-glass{backdrop-filter:blur(10px);}
 
-/* LAYOUT */
-.content-with-ads{display:grid;grid-template-columns:1fr 300px;gap:20px}
-@media(max-width:1024px){.content-with-ads{grid-template-columns:1fr}}
-
-.card{background:rgba(255,255,255,.15);padding:30px;border-radius:25px;margin-bottom:20px}
-.tab-content{display:none}
-.tab-content.active{display:block}
-
-/* LESSONS */
-.level-btn{padding:10px 18px;border-radius:12px;border:none;margin-right:8px;cursor:pointer}
-.level-btn.active{background:#ff6b6b;color:#fff}
-
-/* PIANO */
-.piano{display:flex;margin-top:20px}
-.key{
-width:45px;height:180px;
-background:#fff;border:1px solid #000;
-display:flex;align-items:flex-end;justify-content:center;
-color:#000;cursor:pointer
-}
-.key.black{
-width:30px;height:120px;background:#000;color:#fff;
-margin-left:-15px;margin-right:-15px;z-index:2
-}
-.key.pressed{background:#ff6b6b!important;color:#fff}
-
-/* FOOTER */
-footer{text-align:center;margin-top:40px;opacity:.8}
+/* ===== LOGIN/ SIGNUP DEMO ===== */
+.auth-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:15px;margin-bottom:20px;text-align:center;}
+.auth-card input{padding:8px;margin:5px 0;border-radius:5px;border:none;width:80%;}
+.auth-card button{padding:10px 20px;margin:5px;border-radius:5px;border:none;cursor:pointer;background:#ff6b6b;color:#fff;font-weight:bold;}
 </style>
 </head>
-
-<body>
+<body class="theme-dark">
 <div class="container">
 
-<div class="ad-slot"></div>
+<!-- TOP AD -->
+<div class="ad-slot ad-slot-top">TOP BANNER AD</div>
 
 <header>
 <div class="logo"><i class="fas fa-music"></i> Chris's Music HUB</div>
 </header>
 
+<!-- TABS -->
 <div class="tabs">
 <div class="tab active" onclick="showTab('home')">Home</div>
 <div class="tab" onclick="showTab('lessons')">Lessons</div>
+<div class="tab" onclick="showTab('songs')">Songs</div>
 <div class="tab" onclick="showTab('piano')">Piano</div>
+<div class="tab" onclick="showTab('community')">Community</div>
 <div class="tab" onclick="showTab('contact')">Contact</div>
+<div class="tab" onclick="showTab('account')">Account</div>
 </div>
 
 <div class="content-with-ads">
 <main>
 
-<!-- HOME -->
-<div id="home" class="tab-content active card">
-<h2>Welcome</h2>
-<p>Learn piano online with interactive tools and structured lessons.</p>
+<!-- HOME TAB -->
+<div class="tab-content active" id="home">
+<div class="card">
+<h2>Welcome to Chris's Music HUB</h2>
+<p>Learn piano online with interactive lessons, YouTube tutorials, 5-octave piano, and community sharing!</p>
+<div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+<p>XP: <span id="xpValue">0</span></p>
+<button onclick="gainXP(5)">Watch Ad +5 XP</button>
+</div>
+<div class="ad-slot ad-inline">INLINE AD</div>
 </div>
 
-<div class="ad-slot ad-inline"></div>
-
-<!-- LESSONS -->
-<div id="lessons" class="tab-content card">
+<!-- LESSONS TAB -->
+<div class="tab-content" id="lessons">
+<div class="card">
 <h2>Piano Lessons</h2>
-<button class="level-btn" onclick="selectLevel('beginner',this)">Beginner</button>
-<button class="level-btn" onclick="selectLevel('intermediate',this)">Intermediate</button>
-<button class="level-btn" onclick="selectLevel('advanced',this)">Advanced</button>
-<div id="lessonContent" style="margin-top:15px"></div>
+<p>Select your level (requires 10 XP to watch)</p>
+<div>
+<button onclick="selectLesson('beginner')">Beginner Playlist</button>
+<button onclick="selectLesson('intermediate')">Intermediate Playlist</button>
+<button onclick="selectLesson('advanced')">Advanced Playlist</button>
+</div>
+<div id="lessonContainer" style="margin-top:10px;"></div>
+</div>
+<div class="ad-slot ad-inline">INLINE AD</div>
 </div>
 
-<!-- PIANO -->
-<div id="piano" class="tab-content card">
-<h2>Virtual Piano</h2>
-<div class="piano">
-<div class="key" data-note="C4" onclick="playNote('C4')">C</div>
-<div class="key black" data-note="C#4" onclick="playNote('C#4')"></div>
-<div class="key" data-note="D4" onclick="playNote('D4')">D</div>
-<div class="key black" data-note="D#4" onclick="playNote('D#4')"></div>
-<div class="key" data-note="E4" onclick="playNote('E4')">E</div>
-<div class="key" data-note="F4" onclick="playNote('F4')">F</div>
-<div class="key black" data-note="F#4" onclick="playNote('F#4')"></div>
-<div class="key" data-note="G4" onclick="playNote('G4')">G</div>
-<div class="key black" data-note="G#4" onclick="playNote('G#4')"></div>
-<div class="key" data-note="A4" onclick="playNote('A4')">A</div>
-<div class="key black" data-note="A#4" onclick="playNote('A#4')"></div>
-<div class="key" data-note="B4" onclick="playNote('B4')">B</div>
+<!-- SONGS TAB -->
+<div class="tab-content" id="songs">
+<div class="card">
+<h2>Play Along With Songs</h2>
+<p>(Requires 10 XP to view)</p>
+<div id="songsContainer"></div>
 </div>
 </div>
 
-<!-- CONTACT -->
-<div id="contact" class="tab-content card">
-<h2>Contact</h2>
-<p>YouTube: Chris's Music HUB</p>
-<p>Email: coming soon</p>
+<!-- PIANO TAB -->
+<div class="tab-content" id="piano">
+<div class="card">
+<h2>5-Octave Piano</h2>
+<select id="soundSelect" onchange="changeSound(this.value)">
+<option value="sine">Piano (Sine)</option>
+<option value="square">Organ (Square)</option>
+<option value="triangle">Synth (Triangle)</option>
+</select>
+<div class="piano-wrapper" id="pianoWrapper"></div>
+</div>
+</div>
+
+<!-- COMMUNITY TAB -->
+<div class="tab-content" id="community">
+<div class="card">
+<h2>Share Your Ideas</h2>
+<textarea id="ideaInput" rows="5" style="width:100%;border-radius:10px;padding:10px;" placeholder="Share your ideas..."></textarea>
+<button onclick="shareIdea()">Submit</button>
+<div id="ideaList" style="margin-top:10px;"></div>
+</div>
+</div>
+
+<!-- CONTACT TAB -->
+<div class="tab-content" id="contact">
+<div class="card">
+<h2>Contact Us</h2>
+<p>YouTube: <a href="https://www.youtube.com/@MUCYOChrisThecla" target="_blank">@MUCYOChrisThecla</a></p>
+<p>Email: <a href="mailto:mucyochristhecla@gmail.com">mucyochristhecla@gmail.com</a></p>
+<p>Email: <a href="mailto:chrisprograms2011@gmail.com">chrisprograms2011@gmail.com</a></p>
+<p>Instagram: <a href="https://instagram.com/m.chris.t2011" target="_blank">@m.chris.t2011</a></p>
+</div>
+<div class="card">
+<h2>Everyone Piano App</h2>
+<p>Download: <a href="https://sub4unlock.com/SL/1760710" target="_blank">Everyone Piano</a></p>
+</div>
+</div>
+
+<!-- ACCOUNT TAB -->
+<div class="tab-content" id="account">
+<div class="auth-card">
+<h2>Login / Signup</h2>
+<input type="text" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+<button onclick="signup()">Signup</button>
+</div>
 </div>
 
 </main>
 
-<aside class="ad-slot ad-sidebar"></aside>
+<!-- SIDEBAR AD -->
+<aside class="ad-slot ad-sidebar">SIDEBAR AD</aside>
+
 </div>
 
-<footer>© 2025 Chris's Music HUB</footer>
+<footer>
+<p>© 2025 Chris's Music HUB | Subscribe: @MUCYOChrisThecla</p>
+</footer>
 </div>
-
-<div class="ad-slot ad-mobile-sticky"></div>
+<div class="ad-slot ad-mobile-sticky">MOBILE STICKY AD</div>
 
 <script>
-/* TAB SYSTEM */
-function showTab(id){
-document.querySelectorAll('.tab,.tab-content').forEach(e=>e.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-[...document.querySelectorAll('.tab')].find(t=>t.innerText.toLowerCase().includes(id)).classList.add('active');
+// ===== TAB SYSTEM =====
+function showTab(tabId){
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(tab=>{if(tab.textContent.toLowerCase().includes(tabId)) tab.classList.add('active');});
 }
 
-/* LESSONS */
-function selectLevel(level,btn){
-document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-const text={
-beginner:"Learn notes, posture, and simple melodies.",
-intermediate:"Chords, scales, rhythm, coordination.",
-advanced:"Speed, advanced techniques, improvisation."
+// ===== XP SYSTEM =====
+let xp = 0;
+function gainXP(amount){
+  xp+=amount;
+  document.getElementById("xpValue").textContent=xp;
+  document.getElementById("xpFill").style.width=Math.min(xp*10,100)+"%";
+}
+
+// ===== LESSONS SYSTEM =====
+const lessons = {
+  beginner:"https://www.youtube.com/embed/827jmswqnEA?list=PLP9cbwDiLzdL6IS4-rmzR42ghq3T56XnK",
+  intermediate:"https://www.youtube.com/embed/827jmswqnEA?list=PLP9cbwDiLzdL6IS4-rmzR42ghq3T56XnK",
+  advanced:"https://www.youtube.com/embed/M_Ldo0VMf9c?list=PLR5ap-u8E6toD-XeMUtprVtctSFaRCUS1"
 };
-lessonContent.innerHTML=`<h3>${level.toUpperCase()}</h3><p>${text[level]}</p>`;
+function selectLesson(level){
+  if(xp<10){alert("You need 10 XP to watch this lesson!"); return;}
+  document.getElementById("lessonContainer").innerHTML=`<iframe width="100%" height="400" src="${lessons[level]}" frameborder="0" allowfullscreen></iframe>`;
 }
 
-/* PIANO */
-const ctx=new (window.AudioContext||window.webkitAudioContext)();
-const notes={C4:261.63,"C#4":277.18,D4:293.66,"D#4":311.13,E4:329.63,F4:349.23,"F#4":369.99,G4:392,"G#4":415.3,A4:440,"A#4":466.16,B4:493.88};
-function playNote(n){
-if(ctx.state==="suspended")ctx.resume();
-const o=ctx.createOscillator(),g=ctx.createGain();
-o.frequency.value=notes[n];o.connect(g);g.connect(ctx.destination);
-g.gain.setValueAtTime(.3,ctx.currentTime);
-g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.7);
-o.start();o.stop(ctx.currentTime+.7);
-const k=document.querySelector(`[data-note="${n}"]`);
-k.classList.add("pressed");setTimeout(()=>k.classList.remove("pressed"),150);
+// ===== SONGS SYSTEM =====
+const songIds = ["h7Fv0k_1Ju0","JzlSxrbvfJo","1z4rTSjNqTc","2dTn8OqXQM8","PK_-Dl6j1UM"];
+const songsContainer=document.getElementById("songsContainer");
+songIds.forEach(id=>{
+  const div=document.createElement("div");
+  div.style.marginBottom="15px";
+  div.innerHTML=`<iframe width="100%" height="250" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+  songsContainer.appendChild(div);
+});
+
+// ===== PIANO SYSTEM =====
+const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+const notes = {};
+const octaves=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+for(let i=1;i<=5;i++){
+  octaves.forEach((n,j)=>{notes[n+i]=130.81*Math.pow(2,i-3)*Math.pow(2,j/12);});
 }
+const pianoWrapper=document.getElementById("pianoWrapper");
+function buildPiano(){
+  for(let i=1;i<=5;i++){
+    const octave=document.createElement("div");octave.className="octave";
+    octaves.forEach(n=>{
+      const key=document.createElement("div");key.className=n.includes("#")?"key black-key":"key white-key";
+      key.dataset.note=n+i;key.innerHTML=n+i;
+      key.onclick=()=>playNote(n+i);
+      octave.appendChild(key);
+    });
+    pianoWrapper.appendChild(octave);
+  }
+}
+buildPiano();
+let currentWave="sine";
+function changeSound(type){currentWave=type;}
+function playNote(note){
+  if(!notes[note])return;
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.frequency.value=notes[note];osc.type=currentWave;
+  osc.connect(gain);gain.connect(audioCtx.destination);
+  gain.gain.setValueAtTime(0.25,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.7);
+  osc.start();osc.stop(audioCtx.currentTime+0.7);
+  const key=document.querySelector(`[data-note="${note}"]`);
+  if(key){key.classList.add("pressed");setTimeout(()=>key.classList.remove("pressed"),150);}
+}
+document.addEventListener("keydown",e=>{
+  const map={a:"C1",w:"C#1",s:"D1",e:"D#1",d:"E1",f:"F1",t:"F#1",g:"G1",y:"G#1",h:"A1",u:"A#1",j:"B1",k:"C2",o:"C#2",l:"D2",p:"D#2",";":"E2","'":"F2","[":"F#2","]":"G2","\\":"G#2",z:"A2",x:"A#2",c:"B2",v:"C3",b:"C#3",n:"D3",m:"D#3",",":"E3",".":"F3","/":"F#3"};
+  if(map[e.key]) playNote(map[e.key]);
+});
+
+// ===== COMMUNITY =====
+function shareIdea(){
+  const val=document.getElementById("ideaInput").value.trim();
+  if(val===""){alert("Enter an idea!");return;}
+  const div=document.createElement("div");div.textContent=val;div.style.background="rgba(255,255,255,0.2)";div.style.padding="5px";div.style.margin="5px 0";div.style.borderRadius="5px";
+  document.getElementById("ideaList").prepend(div);document.getElementById("ideaInput").value="";
+}
+
+// ===== LOGIN / SIGNUP DEMO =====
+function login(){
+  const email=document.getElementById("email").value.trim();
+  const pass=document.getElementById("password").value.trim();
+  const admins=["chrisprograms@gmail.com","m.chris.t2011","ligch"];
+  if(admins.includes(email)){alert("Admin logged in (demo).");} else{alert("User logged in (demo).");}
+}
+function signup(){alert("Signup demo: feature works, no real storage.");}
+
+// ===== THEME SWITCHER =====
+const themes=["dark","light","ocean","purple","neon","gold","sunset","matrix","minimal","glass"];
+function setTheme(name){document.body.className="theme-"+name;}
 </script>
 </body>
 </html>
